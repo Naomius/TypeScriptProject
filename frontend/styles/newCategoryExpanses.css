@@ -1,0 +1,12 @@
+.newCategoryExpansesLayout {
+    padding: 100px 60px 0 60px;
+}
+
+.newCategoryExpansesLayout .container {
+    max-width: 1220px;
+    margin: 0 auto;
+}
+
+.container h1 {
+    color: #052C65;
+}

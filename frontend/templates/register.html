@@ -1,0 +1,54 @@
+
+<section class="register">
+  <div class="form-signin w-100 m-auto">
+    <form class="d-flex flex-column justify-content-center align-items-center">
+      <img class="container mb-4 " src="/images/logo.svg" alt="logo" width="176" height="70">
+      <h1 class="form-title h3 mb-3 fw-bold fs-1">Создайте аккаунт</h1>
+      <div class="input-group mb-3">
+        <span class="input-group-text " ><img src="/images/person.png" alt="email"></span>
+        <div class="form-floating fw-normal fs-5 h-100">
+          <input type="text" class="form-control fw-semibold fs-5 " id="fullName" placeholder="fullName" required>
+          <label class="opacity-50 mh-2" for="fullName">ФИО</label>
+        </div>
+      </div>
+      <div class="fullnameValidText">Введите Фамилию и имя</div>
+      <div class="input-group mb-3">
+        <span class="input-group-text " ><img src="/images/mail.png" alt="lock"></span>
+        <div class="form-floating fw-normal fs-5 h-100">
+          <input type="text" class="form-control fw-semibold fs-5 " id="email" placeholder="email" required>
+          <label class="opacity-50 mh-2 emailLabel" for="email">Электронная почта</label>
+        </div>
+      </div>
+      <div class="validationText">Поле email должно быть действительным электронным адресом</div>
+      <div class="input-group mb-3">
+        <span class="input-group-text " ><img src="/images/lock.svg" alt="lock"></span>
+        <div class="form-floating fw-normal fs-5 h-100">
+          <input type="password" class="form-control fw-semibold fs-5 " id="password" placeholder="password" required>
+          <label class="opacity-50 mh-2" for="password">Пароль</label>
+        </div>
+      </div>
+      <div class="passwordValidText">Пароль должен быть не менее 8 символов, содержать как минимум 1 букву в
+        верхнем регистре и как минимум 1 цифру
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text " ><img src="/images/lock.svg" alt="lock"></span>
+        <div class="form-floating fw-normal fs-5 h-100">
+          <input type="password" class="form-control fw-semibold fs-5 " id="passwordRepeat" placeholder="passwordRepeat" required>
+          <label class="opacity-50 mh-2" for="passwordRepeat">Подтверждение пароля</label>
+        </div>
+      </div>
+      <div class="repeatPasswordValidText">Пароли должны быть идентичные</div>
+      <div class="passwordValidTextRegister">Заполните поле с подтверждением пароля</div>
+      <div class="form-checkbox mb-3 col-md-12 d-flex fw-semibold align-text-bottom">
+        <label>
+          <input type="checkbox" value="Запомнить меня" > Запомнить меня
+        </label>
+      </div>
+      <button class="w-100 btn btn-lg btn-primary button" id="process" disabled>Войти</button>
+    </form>
+    <div class="reg-page">
+      <p class="reg-page-p">Уже есть аккаунт? <a href="#/">Войдите в систему</a></p>
+    </div>
+  </div>
+</section>
+
