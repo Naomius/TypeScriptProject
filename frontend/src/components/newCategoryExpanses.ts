@@ -43,8 +43,9 @@ export class NewCategoryExpanses {
                 }
                 if (emptyInput) {
                     emptyInput.style.display = 'block'
-                    emptyInput.nextElementSibling.nextElementSibling.style.border = '1px solid red'
                 }
+                (emptyInput!.nextElementSibling!.nextElementSibling! as HTMLElement).style.border = '1px solid red'
+
                 location.href = 'javascript:void(0)'
             } else if (newTitle) {
                 if (emptyInput && sameCategory) {

@@ -54,7 +54,7 @@ export class MainIncomes {
 
             editBtn.forEach(item => {
                 item.addEventListener('click', event => {
-                   issueId = (event.target as HTMLElement).parentNode.parentNode.id
+                   issueId = (event.target as HTMLElement)!.parentElement!.parentElement!.id
 
                     if (issueId) {
                         location.href = '#/editCategoryIncome?id=' + issueId
@@ -80,13 +80,13 @@ export class MainIncomes {
                     btn.style.display = 'block'
                 }
 
-                let categoryBlockId = (event.target as HTMLElement).parentNode!.parentNode!.id;
+                let categoryBlockId = (event.target as HTMLElement).parentElement!.parentElement!.id;
 
                 if (agreeBtn && btn) {
                     agreeBtn.onclick = (() =>  {
-                        event.target.parentNode.parentNode.remove()
+                        (event.target as HTMLElement)!.parentElement!.parentElement!.remove()
                         btn.style.display = "none"
-                        this.deleteIssueCategory(categoryBlockId)
+                        this.deleteIssueCategory(+categoryBlockId)
                     })
                 }
 

@@ -6,12 +6,15 @@ import {UrlManager} from "../utils/url-manager";
 import {UserInfoType} from "../types/user-info.type";
 import _default from "chart.js/dist/plugins/plugin.tooltip";
 import numbers = _default.defaults.animations.numbers;
+import {isFunction} from "chart.js/helpers";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 export class IncomeAndExpanses {
     profileElement: HTMLElement | null;
     profileFullNameElement: HTMLElement | null;
     tBodyBlock: HTMLElement | null;
     filterOperations: [];
+
 
     constructor() {
         this.profileElement = document.getElementById('profileIssue');
@@ -28,6 +31,7 @@ export class IncomeAndExpanses {
         this.editIncomePage()
         this.filterOperations = [];
         this.init('today');
+
     }
 
 
@@ -69,7 +73,7 @@ export class IncomeAndExpanses {
 
 //----------Filters ---------
 
-    private async init(value?: string | number, dateFrom?: number | string, dateTo?: number | string) {
+    private async init(value?: string, dateFrom?: string, dateTo?: string) {
         this.filterOperations = await Operations.getOperations(value, dateFrom, dateTo);
         if (this.tBodyBlock) {
             this.tBodyBlock.innerHTML = '';
@@ -211,22 +215,28 @@ export class IncomeAndExpanses {
         await CustomHttp.request(config.host + '/operations/' + categoryBlockId, 'DELETE')
     }
 
-    deleteModal() {
+    private deleteModal(): void {
         const btn: HTMLElement | null = document.querySelector('.modal-delete');
         const buttons: NodeListOf<Element> = document.querySelectorAll('.buttonDel');
         const cancelBtn: HTMLElement | null  = document.querySelector('.modalCancelDelete');
         const agreeBtn: HTMLElement | null  = document.querySelector('.agreeDelete');
         buttons.forEach(item => {
             item.addEventListener('click', event => {
-                (<HTMLElement>btn).style.display = 'block'
-                let eventElement: EventTarget | null = event.target;
-                let categoryBlockId: number = eventElement.parentNode.parentNode.parentNode.parentNode.id;
+                if(btn) {
+                    btn.style.display = 'block'
+                }
+                // let eventElement: EventTarget | null = event.target;
 
-                (<HTMLElement>agreeBtn).onclick = (() => {
-                    event.target.parentNode.parentNode.parentNode.parentNode.remove()
-                    (<HTMLElement>btn).style.display = "none"
-                    this.deleteIssueCategory(categoryBlockId)
-                })
+                let categoryBlockId = (event.target as HTMLElement)!.parentElement!.parentElement!.parentElement!.parentElement!.id;
+
+                if (agreeBtn && btn) {
+                    agreeBtn.onclick = (() => {
+                        (event.target as HTMLElement)!.parentElement!.parentElement!.parentElement!.parentElement!.remove()
+                        btn.style.display = "none"
+                        this.deleteIssueCategory(categoryBlockId)
+                    })
+                }
+
             })
         })
         if (cancelBtn && btn) {
@@ -242,7 +252,7 @@ export class IncomeAndExpanses {
 
         editBtn.forEach(item => {
             item.addEventListener('click', event => {
-                issueId = event.target.parentNode.parentNode.parentNode.parentNode.id
+                issueId = (event.target as HTMLElement)!.parentElement!.parentElement!.parentElement!.parentElement!.id
                 if (issueId) {
                     location.href = '#/editIncomeExpanses?id=' + issueId
                 }

@@ -4,14 +4,19 @@ import config from "../../config/config";
 import Chart from "chart.js/auto";
 import {Operations} from "../services/operations";
 import {UserInfoType} from "../types/user-info.type";
+import _default from "chart.js/dist/plugins/plugin.tooltip";
+import numbers = _default.defaults.animations.numbers;
+import * as stream from "stream";
+import {GetOperationsType, GetOperationsTypeArray} from "../types/getOperations.type";
+import {ExpanseCreatType, IncomeCreatType} from "../types/income-creat.type";
 
 
 export class MainPage {
     private diagrams: HTMLElement | null;
     readonly profileElement: HTMLElement | null;
     readonly profileFullNameElement: HTMLElement | null;
-    private incomeData: any[];
-    private expenseData: any[];
+    private incomeData: [];
+    private expenseData: [];
 
     constructor() {
         this.diagrams = document.getElementById('diagrams')
@@ -27,13 +32,13 @@ export class MainPage {
 
 
 
-    dropDownToggle() {
+    private dropDownToggle(): void {
         (<HTMLElement>document.getElementById('profileIssue')).onclick = () => {
             (<HTMLElement>document.getElementById("myDropdown")).classList.toggle("show")
         };
     }
 
-    categoryToggle() {
+    private categoryToggle(): void {
         (<HTMLElement>document.getElementById('navItemToggle')).onclick = () => {
             (<HTMLElement>document.getElementById("home-collapse")).classList.toggle("show")
         };
@@ -59,13 +64,13 @@ export class MainPage {
         await this.incomeDiagrams();
     }
 
-    async getData(value: any, dateFrom: any, dateTo: any) {
+    async getData(value?: string | number | undefined, dateFrom?: string | number | undefined, dateTo?: string | number | undefined) {
         const inc: any = [];
         const dec: any = [];
         const data = await Operations.getOperations(value, dateFrom, dateTo);
         console.log(data)
-        const incomeData = data.filter(i => i.type === 'income').forEach(obj => {
-            const a = inc.find(i => i.category === obj.category);
+        const incomeData = data.filter((income) => income.type === 'income').forEach(obj => {
+            const a = inc.find(income => income.category === obj.category);
             if (a) {
                 let amount = a.amount + obj.amount;
                 a.amount = amount
@@ -76,8 +81,8 @@ export class MainPage {
                 })
             }
         });
-        const expenseData = data.filter(i => i.type === 'expense').forEach(obj => {
-            const a = dec.find(i => i.category === obj.category);
+        const expenseData = data.filter(expanse => expanse.type === 'expense').forEach(obj => {
+            const a = dec.find(expanse => expanse.category === obj.category);
             if (a) {
                 let amount = a.amount + obj.amount;
                 a.amount = amount
@@ -101,21 +106,24 @@ export class MainPage {
 
     async incomeDiagrams() {
         const incomeChart: HTMLElement | null = document.getElementById('income-diagram')
-        const expenseChart: string | Node = (document.getElementById('expense-diagram') as any)
-        (<HTMLElement>incomeChart).parentNode.style.height = '430px';
-        (<HTMLElement>incomeChart).parentNode.style.width = '430px';
-        expenseChart.parentNode.style.height = '430px';
-        expenseChart.parentNode.style.width = '430px';
+        const expenseChart: HTMLElement | null = document.getElementById('expense-diagram')
+        if (incomeChart && expenseChart) {
+            incomeChart.parentElement!.style.height = '430px';
+            (<HTMLElement>incomeChart).parentElement!.style.width = '430px';
+            expenseChart.parentElement!.style.height = '430px';
+            expenseChart.parentElement!.style.width = '430px';
+        }
+
         new Chart(
             (<HTMLCanvasElement>incomeChart),
             {
                 type: 'pie',
                 data: {
-                    labels: this.incomeData.map(row => row.category),
+                    labels: this.incomeData.map((row: IncomeCreatType) => row.category),
                     datasets: [
                         {
                             label: 'Доход в $',
-                            data: this.incomeData.map(row => row.amount)
+                            data: this.incomeData.map((row: PaymentItem) => row.amount)
                         }
                     ]
                 },
@@ -132,15 +140,15 @@ export class MainPage {
             }
         );
         new Chart(
-            expenseChart,
+            (<HTMLCanvasElement>expenseChart),
             {
                 type: 'pie',
                 data: {
-                    labels: this.expenseData.map(row => row.category),
+                    labels: this.expenseData.map((row: ExpanseCreatType) => row.category),
                     datasets: [
                         {
                             label: 'Расход в $',
-                            data: this.expenseData.map(row => row.amount)
+                            data: this.expenseData.map((row:PaymentItem) => row.amount)
                         }
                     ]
                 },

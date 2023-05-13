@@ -1,5 +1,6 @@
 import config from "../../config/config";
 import {Auth} from "./auth";
+import {GetOperationsType} from "../types/getOperations.type";
 
 
 export class Operations {
@@ -7,7 +8,7 @@ export class Operations {
     public static refreshToken: string | null = localStorage.getItem(this.refreshTokenKey);
 
 
-    static async getOperations(period: number | string | undefined, dateFrom: number | string | undefined, dateTo: number | string | undefined) {
+    public static async getOperations(period: string | number | undefined, dateFrom: string | number | undefined, dateTo: string | number | undefined): Promise<any> {
         if (this.refreshToken) {
             if (dateFrom && dateTo && period) {
                 const response = await fetch(config.host + '/operations' + '?period=' + period + '&dateFrom=' + dateFrom + '&dateTo=' + dateTo, {

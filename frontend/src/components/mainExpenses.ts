@@ -56,7 +56,7 @@ export class MainExpenses {
 
         editBtn.forEach(item => {
             item.addEventListener('click', event => {
-                expanseId = ((event.target as HTMLElement).parentNode.parentNode.id)
+                expanseId = ((event.target as HTMLElement)!.parentElement!.parentElement!.id)
 
                 if (expanseId) {
                     location.href = '#/editCategoryExpanses?id=' + expanseId
@@ -95,13 +95,15 @@ export class MainExpenses {
         buttons.forEach(item => {
             item.addEventListener('click', event => {
                 (btn as HTMLElement).style.display = 'block'
-                let categoryBlockId = (event.target as Element).parentNode.parentNode.id;
+                let categoryBlockId = (event.target as HTMLElement)!.parentElement!.parentElement!.id;
 
-                (agreeBtn as HTMLElement).onclick = (() =>  {
-                    (event.target as Element).parentNode.parentNode.remove()
-                    (btn as HTMLElement).style.display = "none"
-                    this.deleteIssueCategory(categoryBlockId)
-                })
+                if (agreeBtn && btn) {
+                    agreeBtn.onclick = (() =>  {
+                        (event.target as HTMLElement)!.parentElement!.parentElement!.remove()
+                        btn.style.display = "none"
+                        this.deleteIssueCategory(categoryBlockId)
+                    })
+                }
             })
         })
 

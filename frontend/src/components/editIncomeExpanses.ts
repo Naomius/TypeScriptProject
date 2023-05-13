@@ -6,13 +6,13 @@ import {QueryParamsType} from "../types/query-params.type";
 import {UserInfoType} from "../types/user-info.type";
 
 export class EditIncomeExpanses {
-    private profileElement: HTMLElement | null;
-    private profileFullNameElement: HTMLElement | null;
+    readonly profileElement: HTMLElement | null;
+    readonly profileFullNameElement: HTMLElement | null;
     public routeParams: QueryParamsType;
     readonly type: HTMLElement | null;
     readonly operationId: string;
     private operation: {};
-    private categoryId: number | null;
+    private categoryId: string | null;
     private category: [];
 
     constructor() {
@@ -63,19 +63,25 @@ export class EditIncomeExpanses {
         const cancelBtn: HTMLElement | null = document.querySelector('.cancelBtn');
         const operations = await CustomHttp.request(config.host + '/operations/?period=all');
 
-       for (let el of this.type) {
-           if (el.value === data.type) {
-               (document.getElementById(`${el.id}`) as HTMLElement).setAttribute('selected', 'selected');
-           }
-       }
+        if (this.type) {
+            for (let el of Array(this.type)) {
+                if ((el as HTMLInputElement).value === data.type) {
+                    (document.getElementById(`${el.id}`) as HTMLElement).setAttribute('selected', 'selected');
+                }
+            }
+        }
+
 
         await this.getCategory();
 
-       for (let el of this.type) {
-           if (el.value === data.type) {
-               (document.getElementById(`${el.id}`) as HTMLElement).setAttribute('selected', 'selected');
-           }
-       }
+        if (this.type) {
+            for (let el of Array(this.type)) {
+                if ((el as HTMLInputElement).value === data.type) {
+                    (document.getElementById(`${el.id}`) as HTMLElement).setAttribute('selected', 'selected');
+                }
+            }
+        }
+
 
        (<HTMLInputElement>category).value = data.category;
        (<HTMLInputElement>amount).value = data.amount;
@@ -83,7 +89,7 @@ export class EditIncomeExpanses {
        (<HTMLInputElement>comment).value = data.comment;
 
        if (category) {
-           this.categoryId = category[category.selectedIndex].id;
+           this.categoryId = (category as HTMLSelectElement)[(category as HTMLSelectElement).selectedIndex].id;
        }
 
        if (!(<HTMLInputElement>this.type).value) {
@@ -92,7 +98,7 @@ export class EditIncomeExpanses {
 
        (<HTMLElement>category).onchange = (() => {
            if (category) {
-               this.categoryId = category[category.selectedIndex].id;
+               this.categoryId = (category as HTMLSelectElement)[(category as HTMLSelectElement).selectedIndex].id;
            }
        })
 
@@ -108,7 +114,7 @@ export class EditIncomeExpanses {
                            "amount": +(<HTMLInputElement>amount).value,
                            "date": (<HTMLInputElement>date).value,
                            "comment": (<HTMLInputElement>comment).value,
-                           "category_id": +(this.categoryId as number)
+                           "category_id": this.categoryId
                        })
            location.href = '#/incomeAndExpanses'
        })

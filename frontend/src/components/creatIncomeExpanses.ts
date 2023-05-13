@@ -17,7 +17,7 @@ export class CreatIncomeExpanses {
     public routeParams: QueryParamsType;
     public type: HTMLElement | null;
     private operationId: string | null;
-    private categoryId: null;
+    private categoryId: string | null;
     public category: [];
 
     constructor() {
@@ -90,7 +90,7 @@ export class CreatIncomeExpanses {
 
         if (category) {
             category.onchange = (() => {
-                this.categoryId = category[category.selectedIndex].id;
+                this.categoryId = (category as HTMLSelectElement)[(category as HTMLSelectElement).selectedIndex].id;
             })
         }
 
